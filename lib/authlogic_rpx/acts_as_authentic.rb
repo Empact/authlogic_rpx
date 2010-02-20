@@ -138,13 +138,6 @@ module AuthlogicRpx
 				end
 			end
 
-			# support a block given to the save
-			def save(perform_validation = true, &block)
-				result = super perform_validation
-				yield(result) if block_given?
-				result
-			end
-
 			# test if account it using RPX authentication
 			# aliased to using_rpx based on authlogic_rpx configuration mode
 			def using_rpx__nomap?
