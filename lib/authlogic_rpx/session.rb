@@ -66,17 +66,24 @@ module AuthlogicRpx
 					validate :validate_user
 				end
 			end
-      		  
+
 			# Determines if the authenticated user is also a new registration.
 			# For use in the session controller to help direct the most appropriate action to follow.
-			# 
+			#
 			def new_registration?
 				new_registration || !new_registration.nil?
 			end
-			
+
+			# True if the login was succeessful, but the logged-in user object is invalid.
+			# For use in the session controller to help direct the most appropriate action to follow.
+			#
+			def registration_incomplete?
+				valid? && attempted_record && !attempted_record.valid?
+			end
+
 			# Determines if the authenticated user has a complete registration (no validation errors)
 			# For use in the session controller to help direct the most appropriate action to follow.
-			# 
+			#
 			def registration_complete?
 				attempted_record && attempted_record.valid?
 			end
