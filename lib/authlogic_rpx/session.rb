@@ -155,7 +155,7 @@ module AuthlogicRpx
 				# so what do we do if we can't find an existing user matching the RPX authentication...
 				if !attempted_record
 					if auto_register?
-						self.attempted_record = klass.new()
+						self.attempted_record = new_rpx_user(controller.params)
 						map_rpx_data
 						
 						# save the new user record - without session maintenance else we
@@ -198,6 +198,16 @@ module AuthlogicRpx
 			def map_rpx_data
 				self.attempted_record.send("#{klass.login_field}=", @rpx_data['profile']['preferredUsername'] ) if attempted_record.send(klass.login_field).blank?
 				self.attempted_record.send("#{klass.email_field}=", @rpx_data['profile']['email'] ) if attempted_record.send(klass.email_field).blank?
+			end
+
+			# new_rpx_user creates a fresh user in the case of auto-registration, prior to mapping in
+			# the rpx data via map_rpx_data. You are passed the current controller params,
+			# which you can use to initialize the user.
+			#
+			# Override this in your session model to change the initialization of auto-registered users.
+			#
+			def new_rpx_user(params)
+				klass.new()
 			end
 
 			# map_rpx_data_each_login provides a hook to allow you to map RPX profile information every time the user
