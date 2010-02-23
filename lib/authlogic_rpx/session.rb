@@ -63,6 +63,7 @@ module AuthlogicRpx
 					attr_accessor :new_registration
 					after_persisting :add_rpx_identifier, :if => :adding_rpx_identifier?
 					validate :validate_by_rpx, :if => :authenticating_with_rpx?
+					validate :validate_user
 				end
 			end
       		  
@@ -172,6 +173,10 @@ module AuthlogicRpx
 					map_rpx_data_each_login
 				end
 			
+			end
+
+			def validate_user
+				errors.add(:user, "is invalid") if user && !user.valid?
 			end
 
 			# map_rpx_data maps additional fields from the RPX response into the user object during auto-registration.

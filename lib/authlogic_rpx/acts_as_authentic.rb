@@ -101,7 +101,7 @@ module AuthlogicRpx
 				    alias_method :add_rpx_identifier, :add_rpx_identifier__internal
 				    alias_method :identified_by?, :identified_by__internal?
 				    alias_method :merge_user_id, :merge_user_id__internal
-            has_many :rpx_identifiers, :class_name => 'RPXIdentifier', :dependent => :destroy
+            has_many :rpx_identifiers, :class_name => 'RPXIdentifier', :validate => false, :dependent => :destroy
             
       			# Add custom find_by_rpx_identifier class method
       			def self.find_by_rpx_identifier(id)
