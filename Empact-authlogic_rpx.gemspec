@@ -16,12 +16,13 @@ Gem::Specification.new do |s|
     "README.rdoc"
   ]
   s.files = [
-    "CHANGELOG.rdoc",
+    ".gitignore",
+     "CHANGELOG.rdoc",
+     "Empact-authlogic_rpx.gemspec",
      "MIT-LICENSE",
      "README.rdoc",
      "Rakefile",
      "VERSION",
-     "authlogic_rpx.gemspec",
      "generators/add_authlogic_rpx_migration/USAGE",
      "generators/add_authlogic_rpx_migration/add_authlogic_rpx_migration_generator.rb",
      "generators/add_authlogic_rpx_migration/templates/migration_internal_mapping.rb",
