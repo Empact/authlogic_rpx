@@ -1,27 +1,26 @@
 ENV['RDOCOPT'] = "-S -f html -T hanna"
 
-require "rubygems"
-require "echoe"
+require 'rubygems'
 require File.dirname(__FILE__) << "/lib/authlogic_rpx/version"
 
-Echoe.new("authlogic_rpx") do |p|
-  p.version = AuthlogicRpx::Version::STRING
-  p.url = "http://github.com/tardate/authlogic_rpx"
-  p.summary = "Authlogic plug-in for RPX support"
-  p.description = "Authlogic extension/plugin that provides RPX (rpxnow.com) authentication support"
-
-  p.runtime_dependencies = ["authlogic >=2.1.3", "rpx_now >=0.6.12" ]
-  p.development_dependencies = []
-
-  p.author = "Paul Gallagher / tardate"
-  p.email  = "gallagher.paul@gmail.com"
-
-  p.install_message = ""
+begin
+  require 'jeweler'
+  Jeweler::Tasks.new do |p|
+    p.name = "authlogic_rpx"
+    p.summary = "Authlogic plug-in for RPX support"
+    p.description = "Authlogic extension/plugin that provides RPX (rpxnow.com) authentication support"
+    p.email = "gallagher.paul@gmail.com"
+    p.homepage = "http://github.com/tardate/authlogic_rpx"
+    p.authors = ["Paul Gallagher / tardate"]
+    p
+    p.add_dependency("authlogic", ">=2.1.3")
+    p.add_dependency("rpx_now", ">=0.6.12")
+  end
+rescue LoadError
+  puts "Jeweler not available. Install it with: gem install jeweler"
 end
 
-
-Rake::Task[:test].clear
-
+require 'rake/testtask'
 Rake::TestTask.new(:unit) do |t|
   t.libs << "test/libs"
   t.pattern = 'test/unit/*test.rb'
