@@ -6,7 +6,7 @@ require File.dirname(__FILE__) << "/lib/authlogic_rpx/version"
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |p|
-    p.name = "authlogic_rpx"
+    p.name = "Empact-authlogic_rpx"
     p.summary = "Authlogic plug-in for RPX support"
     p.description = "Authlogic extension/plugin that provides RPX (rpxnow.com) authentication support"
     p.email = "gallagher.paul@gmail.com"

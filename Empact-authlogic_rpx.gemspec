@@ -4,8 +4,8 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{authlogic_rpx}
-  s.version = "1.1.1"
+  s.name = %q{Empact-authlogic_rpx}
+  s.version = "1.1.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Paul Gallagher / tardate"]
@@ -57,7 +57,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/tardate/authlogic_rpx}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.4}
+  s.rubygems_version = %q{1.3.6}
   s.summary = %q{Authlogic plug-in for RPX support}
   s.test_files = [
     "test/integration/basic_authentication_and_registration_test.rb",
