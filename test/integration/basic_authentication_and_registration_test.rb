@@ -27,13 +27,14 @@ class BasicAuthenticationAndRegistrationTest < ActiveSupport::TestCase
     # get response template. set the controller token (used by RPX mock to match mock response)
     test_user = rpxresponses(:unregistered_rpx_auth_user_one)
     controller.params[:token] = test_user.username
-    stub.instance_of(User).valid? { false }
     # emulate constraint violation
+
+    session = UserSession.new
+
     stub.instance_of(User).save_without_session_maintenance.with_any_args {|*args|
       raise "Kaboom" unless args.empty? || args.first
     }
-
-    session = UserSession.new
+    stub.instance_of(User).valid? { false }
     assert_true session.registration_incomplete?
   end
 

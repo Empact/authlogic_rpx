@@ -183,7 +183,7 @@ module AuthlogicRpx
 			end
 
 			def validate_user
-				errors.add(:user, "is invalid") if user && !user.valid?
+				errors.add(:user, "is invalid") if attempted_record && !attempted_record.valid?
 			end
 
 			# map_rpx_data maps additional fields from the RPX response into the user object during auto-registration.
