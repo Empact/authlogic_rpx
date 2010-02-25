@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Paul Gallagher / tardate"]
-  s.date = %q{2010-02-23}
+  s.date = %q{2010-02-25}
   s.description = %q{Authlogic extension/plugin that provides RPX (rpxnow.com) authentication support}
   s.email = %q{gallagher.paul@gmail.com}
   s.extra_rdoc_files = [
@@ -33,6 +33,7 @@ Gem::Specification.new do |s|
      "lib/authlogic_rpx/helper.rb",
      "lib/authlogic_rpx/rpx_identifier.rb",
      "lib/authlogic_rpx/session.rb",
+     "lib/authlogic_rpx/session/validation.rb",
      "lib/authlogic_rpx/version.rb",
      "rails/init.rb",
      "test/fixtures/rpxresponses.yml",
