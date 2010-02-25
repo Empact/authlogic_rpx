@@ -9,6 +9,7 @@ rescue Gem::LoadError
   require File.dirname(__FILE__) + "/libs/ext_test_unit"
 end
 
+require 'rr'
 require "ruby-debug"
 require "active_record"
 require "action_controller"
@@ -80,6 +81,7 @@ require File.dirname(__FILE__) + '/libs/user'
 require File.dirname(__FILE__) + '/libs/user_session'
 
 class ActiveSupport::TestCase
+  include RR::Adapters::TestUnit
   include ActiveRecord::TestFixtures
   self.fixture_path = File.dirname(__FILE__) + "/fixtures"
   self.use_transactional_fixtures = false
@@ -87,9 +89,5 @@ class ActiveSupport::TestCase
   self.pre_loaded_fixtures = false
   fixtures :all
   setup :activate_authlogic
-  
-  private
-
-    
 end
 

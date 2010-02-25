@@ -27,12 +27,16 @@ class BasicAuthenticationAndRegistrationTest < ActiveSupport::TestCase
     # get response template. set the controller token (used by RPX mock to match mock response)
     test_user = rpxresponses(:unregistered_rpx_auth_user_one)
     controller.params[:token] = test_user.username
-    User.any_instance.stubs(:valid?).returns(false)
+    stub.instance_of(User).valid? { false }
+    # emulate constraint violation
+    stub.instance_of(User).save_without_session_maintenance.with_any_args {|*args|
+      raise "Kaboom" unless args.empty? || args.first
+    }
 
     session = UserSession.new
     assert_true session.registration_incomplete?
   end
- 
+
   must "auto-register an unregistered user" do
     # enforce Authlogic settings required for test
     UserSession.auto_register true
