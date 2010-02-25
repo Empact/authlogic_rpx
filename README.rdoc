@@ -1,5 +1,10 @@
 = Authlogic_RPX
 
+== Changes
+
+This fork enables full-featured auto-registration without sacrificing database constraints.
+{See the source for the sample workflow}[http://github.com/Empact/rails-authlogic-rpx-sample/].
+
 == Purpose
 
 Authlogic_RPX is an Authlogic extension library that provides support for authentication using the RPX multi-authentication service offered by JanRain. To use RPX, you must first register your application at {RPX}[http://rpxnow.com/]. A free "Basic" account is available, in addition to paid enhanced versions. All work with Authlogic_RPX.  
@@ -158,9 +163,6 @@ The user_model parameter specifies the name of the user/member model in your app
 You may need to customise the migration file to remove database constraints on other fields if they will be unused in the RPX case
 (e.g. crypted_password and password_salt to make password authentication optional).
 
-If you are using auto-registration, you must also remove any database constraints for fields that will be automatically mapped
-(see notes in "3. Add custom user profile mapping during auto-registration")
-
 ==== Sample Migration Generated Script (using internal mapping)
 
 The following command will generate a migration for the case where you want to use authlogic_rpx internal mapping and your user model is called 'User':
@@ -182,8 +184,6 @@ The migration script will appear like this:
       
       # == Customisation may be required here ==
       # You may need to remove database constraints on other fields if they will be unused in the RPX case
-      # (e.g. crypted_password and password_salt to make password authentication optional). 
-      # If you are using auto-registration, you must also remove any database constraints for fields that will be automatically mapped
       # e.g.:
       #change_column :users, :crypted_password, :string, :default => nil, :null => true
       #change_column :users, :password_salt, :string, :default => nil, :null => true
@@ -357,22 +357,10 @@ If you have other fields you want to map, you can provide your own implementatio
   end
 
 
-WARNING: if you are using auto-registration, any fields you map should NOT have constraints enforced at the database level.
-Authlogic_rpx will optimistically attempt to save the user record during registration, and violating a database constraint will cause the authentication/registration to fail.
+WARNING: if you are using auto-registration, you will need to implement a special workflow which allows
+users to address validation errors at registration time.
 
-You can/should enforce any required validations at the model level e.g.
-
-  validates_uniqueness_of   :username, :case_sensitive => false
-  
-This will allow the auto-registration to proceed, and the user can be given a chance to rectify the validation errors on your user profile page.
-
-If it is not acceptable in your application to have user records created with potential validation errors in auto-populated fields, you will need to override map_rpx_data and implement whatever special handling makes sense in your case. For example:
-  
-* directly check for uniqueness and other validation requirements
-* automatically "uniquify" certain fields like username
-* save conflicting profile information to "pending user review" columns or a seperate table
-
-{See the source for the sample user_session.rb}[http://github.com/tardate/rails-authlogic-rpx-sample/blob/master/app/models/user_session.rb].
+{See the source for the sample workflow}[http://github.com/Empact/rails-authlogic-rpx-sample/].
 
 ==== 3b. map_rpx_data_each_login: user profile mapping during login
 
