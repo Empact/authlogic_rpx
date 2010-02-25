@@ -18,7 +18,21 @@ class BasicAuthenticationAndRegistrationTest < ActiveSupport::TestCase
     assert_false session.save, "should not be a valid session"
   end
 
+  must "mark an invalaid auto-registered user as registration_incomplete" do
+    # enforce Authlogic settings required for test
+    UserSession.auto_register true
+    User.account_merge_enabled false
+    User.account_mapping_mode :none
 
+    # get response template. set the controller token (used by RPX mock to match mock response)
+    test_user = rpxresponses(:unregistered_rpx_auth_user_one)
+    controller.params[:token] = test_user.username
+    User.any_instance.stubs(:valid?).returns(false)
+
+    session = UserSession.new
+    assert_true session.registration_incomplete?
+  end
+ 
   must "auto-register an unregistered user" do
     # enforce Authlogic settings required for test
     UserSession.auto_register true
@@ -30,11 +44,11 @@ class BasicAuthenticationAndRegistrationTest < ActiveSupport::TestCase
     controller.params[:token] = test_user.username
     
     session = UserSession.new
+    assert_false session.registration_incomplete?
     assert_true session.save, "should be a valid session"
     assert_true session.new_registration?, "should be a new registration"
     assert_true session.registration_complete?, "registration should be complete"
   end
- 
 
   must "auto-register disabled for an unregistered user" do
     # enforce Authlogic settings required for test
@@ -47,6 +61,7 @@ class BasicAuthenticationAndRegistrationTest < ActiveSupport::TestCase
     controller.params[:token] = test_user.username
     
     session = UserSession.new
+    assert_false session.registration_incomplete?
     assert_false session.save, "should not be a valid session"
   end
 
