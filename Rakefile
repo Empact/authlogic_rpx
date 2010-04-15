@@ -13,8 +13,8 @@ begin
     p.homepage = "http://github.com/tardate/authlogic_rpx"
     p.authors = ["Paul Gallagher / tardate"]
     p
-    p.add_dependency("authlogic", ">=2.1.3")
-    p.add_dependency("rpx_now", ">=0.6.12")
+    p.add_dependency("Empact-authlogic", ">=2.1.3")
+    p.add_dependency("Empact-rpx_now", ">=0.6.12")
   end
 rescue LoadError
   puts "Jeweler not available. Install it with: gem install jeweler"

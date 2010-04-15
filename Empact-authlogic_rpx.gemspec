@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Paul Gallagher / tardate"]
-  s.date = %q{2010-02-25}
+  s.date = %q{2010-04-15}
   s.description = %q{Authlogic extension/plugin that provides RPX (rpxnow.com) authentication support}
   s.email = %q{gallagher.paul@gmail.com}
   s.extra_rdoc_files = [
@@ -86,15 +86,15 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<authlogic>, [">= 2.1.3"])
-      s.add_runtime_dependency(%q<rpx_now>, [">= 0.6.12"])
+      s.add_runtime_dependency(%q<Empact-authlogic>, [">= 2.1.3"])
+      s.add_runtime_dependency(%q<Empact-rpx_now>, [">= 0.6.12"])
     else
-      s.add_dependency(%q<authlogic>, [">= 2.1.3"])
-      s.add_dependency(%q<rpx_now>, [">= 0.6.12"])
+      s.add_dependency(%q<Empact-authlogic>, [">= 2.1.3"])
+      s.add_dependency(%q<Empact-rpx_now>, [">= 0.6.12"])
     end
   else
-    s.add_dependency(%q<authlogic>, [">= 2.1.3"])
-    s.add_dependency(%q<rpx_now>, [">= 0.6.12"])
+    s.add_dependency(%q<Empact-authlogic>, [">= 2.1.3"])
+    s.add_dependency(%q<Empact-rpx_now>, [">= 0.6.12"])
   end
 end
 
