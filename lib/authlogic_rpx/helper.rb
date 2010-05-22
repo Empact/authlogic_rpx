@@ -36,7 +36,7 @@ module AuthlogicRpx
     private
     
     def build_token_url!( options )
-      options.delete( :return_url ) + '?' + (
+      options.delete( :return_url ) + (options[:return_url].include?('?') ? '&' : '?') + (
         { :authenticity_token => form_authenticity_token, :add_rpx => options.delete( :add_rpx ) }.collect { |n| "#{n[0]}=#{ u(n[1]) }" if n[1] }
 			).compact.join('&')
     end
