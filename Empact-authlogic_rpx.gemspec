@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{Empact-authlogic_rpx}
-  s.version = "1.1.5"
+  s.version = "1.1.7"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Paul Gallagher / tardate"]
@@ -52,6 +52,7 @@ Gem::Specification.new do |s|
      "test/test_helper.rb",
      "test/test_internal_mapping_helper.rb",
      "test/unit/acts_as_authentic_settings_test.rb",
+     "test/unit/helpers_test.rb",
      "test/unit/session_settings_test.rb",
      "test/unit/session_validation_test.rb",
      "test/unit/verify_rpx_mock_test.rb"
@@ -76,6 +77,7 @@ Gem::Specification.new do |s|
      "test/test_helper.rb",
      "test/test_internal_mapping_helper.rb",
      "test/unit/acts_as_authentic_settings_test.rb",
+     "test/unit/helpers_test.rb",
      "test/unit/session_settings_test.rb",
      "test/unit/session_validation_test.rb",
      "test/unit/verify_rpx_mock_test.rb"
