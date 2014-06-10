@@ -8,7 +8,7 @@ module AuthlogicRpx
 				include Methods
 			end
 		end
-		
+
 		module Config
 
 			def find_by_rpx_identifier_method(value = nil)
@@ -16,7 +16,7 @@ module AuthlogicRpx
 			end
 			alias_method :find_by_rpx_identifier_method=, :find_by_rpx_identifier_method
 
-			# Auto Register is enabled by default. 
+			# Auto Register is enabled by default.
 			# Add this in your Session object if you need to disable auto-registration via rpx
 			#
 			def auto_register(value=true)
@@ -24,24 +24,24 @@ module AuthlogicRpx
 			end
 			def auto_register_value(value=nil)
 				rw_config(:auto_register,value,true)
-			end      
+			end
 			alias_method :auto_register=,:auto_register
 
-			# Add this in your Session object to set the RPX API key 
+			# Add this in your Session object to set the RPX API key
 			# RPX won't work without the API key. Set it here if not already set in your app configuration.
 			#
 			def rpx_key(value=nil)
 				rpx_key_value(value)
 			end
 			def rpx_key_value(value=nil)
-				if !inheritable_attributes.include?(:rpx_key) 
-					RPXNow.api_key = value 
+				if !inheritable_attributes.include?(:rpx_key)
+					RPXNow.api_key = value
 				end
 				rw_config(:rpx_key,value,false)
 			end
 			alias_method :rpx_key=,:rpx_key
 
-			# Add this in your Session object to set whether RPX returns extended user info 
+			# Add this in your Session object to set whether RPX returns extended user info
 			# By default, it will not, which is enough to get username, name, email and the rpx identified
 			# if you want to map additional information into your user details, you can request extended
 			# attributes (though not all providers give them - see the RPX docs)
@@ -55,9 +55,9 @@ module AuthlogicRpx
 			alias_method :rpx_extended_info=,:rpx_extended_info
 
 		end
-		
+
 		module Methods
-		  
+
 			def self.included(klass)
 				klass.class_eval do
 					attr_accessor :new_registration
@@ -87,6 +87,12 @@ module AuthlogicRpx
 			def registration_complete?
 				attempted_record && attempted_record.valid?
 			end
+
+      # TODO: rails 3 authlogic monkeypatch. Not sure if this code is quite right yet
+      def to_key
+        new_record? ? nil : [ self.send(self.class.primary_key) ]
+      end
+
 
 		private
 		  # Tests if current request is for RPX authentication
@@ -118,23 +124,23 @@ module AuthlogicRpx
 			def adding_rpx_identifier?
 				controller.params[:token] && controller.params[:add_rpx]
 			end
-			
-			# Handles the special case of RPX being added to an existing account. 
+
+			# Handles the special case of RPX being added to an existing account.
 			# At this point, a session has been established as a result of a "save" on the user model (which indirectly triggers user session validation).
 			# We do not directly add the RPX details to the user record here in order to avoid getting
 			# into a recursive dance between the session and user models.
-			# Rather, it uses the trick of adding the necessary RPX information to the session object, 
+			# Rather, it uses the trick of adding the necessary RPX information to the session object,
 			# and the user model will pluck these values out before completing its validation step.
 			#
 			def add_rpx_identifier
 				data = RPXNow.user_data(controller.params[:token], :extended=> rpx_extended_info? ) {|raw| raw }
 				controller.session['added_rpx_data'] = data if data
 			end
-			
+
 			# the main RPX magic. At this point, a session is being validated and we know RPX identifier
-			# has been provided. We'll callback to RPX to verify the token, and authenticate the matching 
-			# user. 
-			# If no user is found, and we have auto_register enabled (default) this method will also 
+			# has been provided. We'll callback to RPX to verify the token, and authenticate the matching
+			# user.
+			# If no user is found, and we have auto_register enabled (default) this method will also
 			# create the user registration stub.
 			#
 			# On return to the controller, you can test for new_registration? and registration_complete?
@@ -144,28 +150,28 @@ module AuthlogicRpx
 				@rpx_data = RPXNow.user_data(
 					controller.params[:token],
 					:extended => rpx_extended_info?) { |raw| raw }
-				
+
 				# If we don't have a valid sign-in, give-up at this point
 				if @rpx_data.nil? || @rpx_data['profile'].nil?
 					errors.add_to_base("Authentication failed. Please try again.")
 					return false
 				end
-				
+
 				rpx_id = @rpx_data['profile']['identifier']
 				rpx_provider_name = @rpx_data['profile']['providerName']
 				if rpx_id.blank?
 					errors.add_to_base("Authentication failed. Please try again.")
 					return false
 				end
-				
+
 				self.attempted_record = klass.send(find_by_rpx_identifier_method, rpx_id)
-				
+
 				# so what do we do if we can't find an existing user matching the RPX authentication...
 				if !attempted_record
 					if auto_register?
 						self.attempted_record = new_rpx_user(controller.params)
 						map_rpx_data
-						
+
 						# save the new user record - without session maintenance else we
 						# get caught in a self-referential hell, since both session and
 						# user objects invoke each other upon save
@@ -179,7 +185,7 @@ module AuthlogicRpx
 				else
 					map_rpx_data_each_login
 				end
-			
+
 			end
 
 			def validate_user
@@ -193,7 +199,7 @@ module AuthlogicRpx
 			# In this procedure, you will be writing to fields of the "self.attempted_record" object, pulling data from the @rpx_data object.
 			#
 			# WARNING: if you are using auto-registration, any fields you map should NOT have constraints enforced at the database level.
-			# authlogic_rpx will optimistically attempt to save the user record during registration, and 
+			# authlogic_rpx will optimistically attempt to save the user record during registration, and
 			# violating a database constraint will cause the authentication/registration to fail.
 			#
 			# You can/should enforce any required validations at the model level e.g.
@@ -224,7 +230,7 @@ module AuthlogicRpx
 
 			# map_rpx_data_each_login provides a hook to allow you to map RPX profile information every time the user
 			# logs in.
-			# By default, nothing is mapped. 
+			# By default, nothing is mapped.
 			#
 			# This would mainly be used to update relatively volatile information that you are maintaining in the user model (such as profile image url)
 			#
@@ -234,8 +240,8 @@ module AuthlogicRpx
 			def map_rpx_data_each_login
 
 			end
-	
+
 		end
-		
+
 	end
 end

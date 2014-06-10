@@ -1,3 +1,5 @@
+require 'active_support/core_ext/class/inheritable_attributes'
+
 require 'authlogic'
 require "authlogic_rpx/version"
 require "authlogic_rpx/acts_as_authentic"

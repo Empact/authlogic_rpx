@@ -1,3 +1,10 @@
+== 1.2.0 released 2010-09-29
+
+* added rails 3 compatibility (GH#24)
+* updated gem support to authlogic 2.1.6 and rpx_now 0.6.23
+* fix GH#21 internal mapping fails if user model is not called "User"
+* fix GH#18 Add methods to retrieve "all rpx users" and "all non-rpx users"
+
 == 1.1.4 released 2010-04-15
 
 * Rely on Empact-authlogic and Empact-rpx_now
@@ -10,7 +17,7 @@
 
 * added identity mapping and merging support  [GH#10,GH#13]
   * new configuration parameters: account_mapping_mode; account_merge_enabled.
-  * new callbacks: before_merge_rpx_data; after_merge_rpx_data. 
+  * new callbacks: before_merge_rpx_data; after_merge_rpx_data.
 * updated gem support to authlogic 2.1.3 and rpx_now 0.6.11
 * support all rpx_now options in popup/embed code [GH#6]
 * automated tests are now working [GH#7]
